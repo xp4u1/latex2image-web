@@ -76,20 +76,20 @@ Additionally, the compilation process will be killed after 5 seconds if not comp
 
 Commands used:
 
-* `latex` - Converts `.tex` source file to `.dvi` intermediate
-* `dvisvgm` - Converts `.dvi` file to `.svg` vector image
-* `svgexport` - Converts `.svg` to `.png` or `.jpg` raster images
-* `imagemin` - Compresses `.png` and `.jpg` images
+- `latex` - Converts `.tex` source file to `.dvi` intermediate
+- `dvisvgm` - Converts `.dvi` file to `.svg` vector image
+- `svgexport` - Converts `.svg` to `.png` or `.jpg` raster images
+- `imagemin` - Compresses `.png` and `.jpg` images
 
 ## Notes
 
-* The directories `temp/` and `output/` will be generated automatically inside the `latex2image-web/` directory upon first launch.
-* `temp/` stores temporary `.tex`, `.dvi`, and `.svg` files during compilation in an inner `temp/<id>/` directory, which is deleted upon completion of the conversion.
-* Final output images are stored in `output/`, and are never deleted.
+- The directories `temp/` and `output/` will be generated automatically inside the `latex2image-web/` directory upon first launch.
+- `temp/` stores temporary `.tex`, `.dvi`, and `.svg` files during compilation in an inner `temp/<id>/` directory, which is deleted upon completion of the conversion.
+- Final output images are stored in `output/`, and are never deleted.
 
 ## Authors
 
-* Joseph Rautenbach - [joeraut](https://github.com/joeraut)
+- Joseph Rautenbach - [joeraut](https://github.com/joeraut)
 
 ## Issues
 
