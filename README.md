@@ -34,13 +34,13 @@ docker pull blang/latex:ubuntu
 
 ### Node.js
 
-I made use of v10.14.2, anything newer should be fine.
+I made use of v13.13.0, anything newer should be fine.
 
-After cloning or downloading this project, run the following to install local dependencies from npm:
+After cloning or downloading this project, run the following to install local dependencies from yarn:
 
 ```
 cd latex2image-web/
-npm install
+yarn
 ```
 
 ### (Optional) Global Node.js packages for non-SVG image export
@@ -48,8 +48,8 @@ npm install
 SVG files can be generated as-is, but for PNG and JPG export support, the two global Node.js packages [svgexport](https://www.npmjs.com/package/svgexport) and [imagemin-cli](https://www.npmjs.com/package/imagemin-cli) are required:
 
 ```
-npm install svgexport -g
-npm install imagemin-cli -g
+yarn global add svgexport
+yarn global add imagemin-cli
 ```
 
 ## Usage
