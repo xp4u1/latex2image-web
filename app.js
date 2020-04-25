@@ -1,6 +1,6 @@
-import { existsSync, mkdirSync, writeFileSync } from "fs";
-import { mkdir, exec, cp, rm } from "shelljs";
-import express, { static } from "express";
+const fs = require("fs");
+const shell = require("shelljs");
+const express = require("express");
 
 const port = 3001;
 
@@ -75,22 +75,22 @@ EQUATION
 \\end{document}`;
 
 // Create temp and output directories on first run
-if (!existsSync(tempDirRoot)) {
-  mkdirSync(tempDirRoot);
+if (!fs.existsSync(tempDirRoot)) {
+  fs.mkdirSync(tempDirRoot);
 }
-if (!existsSync(outputDir)) {
-  mkdirSync(outputDir);
+if (!fs.existsSync(outputDir)) {
+  fs.mkdirSync(outputDir);
 }
 
 const app = express();
 
-import { json, urlencoded } from "body-parser";
-app.use(json());
-app.use(urlencoded({ extended: true }));
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Allow static html files and output files to be accessible
-app.use("/", static(staticDir));
-app.use("/output", static(outputDir));
+app.use("/", express.static(staticDir));
+app.use("/output", express.static(outputDir));
 
 // POST call for LaTeX to image conversion. Convert and return image URL or error message
 app.post("/convert", function (req, res) {
@@ -106,10 +106,10 @@ app.post("/convert", function (req, res) {
           eqnInput = "&" + eqnInput.replace(/\\\\(?!$)/g, "\\\\&"); // replace any "\\" not at EOF with "\\&", to enforce left alignment
         }
 
-        mkdir(`${tempDirRoot}${id}`);
+        shell.mkdir(`${tempDirRoot}${id}`);
 
         const document = documentTemplate.replace("EQUATION", eqnInput);
-        writeFileSync(`${tempDirRoot}${id}/equation.tex`, document); // Write generated .tex file
+        fs.writeFileSync(`${tempDirRoot}${id}/equation.tex`, document); // Write generated .tex file
 
         let result = {};
 
@@ -125,11 +125,11 @@ app.post("/convert", function (req, res) {
         const fileFormat = req.body.outputFormat.toLowerCase();
 
         // Asynchronously compile and render the LaTeX to an image
-        exec(finalDockerCMD, { async: true }, function () {
-          if (existsSync(`${tempDirRoot}${id}/equation.svg`)) {
+        shell.exec(finalDockerCMD, { async: true }, function () {
+          if (fs.existsSync(`${tempDirRoot}${id}/equation.svg`)) {
             if (fileFormat === "svg") {
               // Converting to SVG, no further processing required
-              cp(
+              shell.cp(
                 `${tempDirRoot}${id}/equation.svg`,
                 `${outputDir}img-${id}.svg`
               );
@@ -148,10 +148,10 @@ app.post("/convert", function (req, res) {
                 // Add a white background for jpg images
                 finalSvgToImageCMD += ' "svg {background: white}"';
               }
-              exec(finalSvgToImageCMD);
+              shell.exec(finalSvgToImageCMD);
 
               // Ensure conversion was successful; eg. fails if `svgexport` or `imagemin` is not installed
-              if (existsSync(`${tempDirRoot}${id}/equation.${fileFormat}`)) {
+              if (fs.existsSync(`${tempDirRoot}${id}/equation.${fileFormat}`)) {
                 // Compress the resultant image
                 let finalImageMinCMD = imageMinCMD.replace(
                   "IN_FILE_NAME",
@@ -161,10 +161,10 @@ app.post("/convert", function (req, res) {
                   "OUT_FILE_NAME",
                   `${tempDirRoot}${id}/equation_compressed.${fileFormat}`
                 );
-                exec(finalImageMinCMD);
+                shell.exec(finalImageMinCMD);
 
                 // Final image
-                cp(
+                shell.cp(
                   `${tempDirRoot}${id}/equation_compressed.${fileFormat}`,
                   `${outputDir}img-${id}.${fileFormat}`
                 );
@@ -179,7 +179,7 @@ app.post("/convert", function (req, res) {
               "Error converting LaTeX to image. Please ensure the input is valid.";
           }
 
-          rm("-r", `${tempDirRoot}${id}`); // Delete temporary files for this conversion
+          shell.rm("-r", `${tempDirRoot}${id}`); // Delete temporary files for this conversion
 
           res.end(JSON.stringify(result));
         });
