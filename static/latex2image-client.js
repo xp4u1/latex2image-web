@@ -55,7 +55,7 @@ $(document).ready(function () {
     $("#renderButton").prop("disabled", true);
     $("#convertButton").prop("value", "Converting...");
     $.ajax({
-      url: "/convert",
+      url: "convert",
       type: "POST",
       data: {
         latexInput: $("#latexInputTextArea").val(),
