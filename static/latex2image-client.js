@@ -1,10 +1,10 @@
-var sampleEquation = "\\frac{\\pi}{2} = \\int_{-1}^{1} \\sqrt{1-x^2}\\ dx";
-var hasShownBefore = false;
+let sampleEquation = "\\frac{\\pi}{2} = \\int_{-1}^{1} \\sqrt{1-x^2}\\ dx";
+let hasShownBefore = false;
 
 $(document).ready(function () {
   function show(resultData) {
     function afterSlideUp() {
-      var resultDataJSON;
+      let resultDataJSON;
       if ((resultDataJSON = JSON.parse(resultData)) && !resultDataJSON.error) {
         $("#resultImage").attr("src", resultDataJSON.imageURL);
         $("#downloadButton").attr("href", resultDataJSON.imageURL);
