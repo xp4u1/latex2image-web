@@ -1,4 +1,3 @@
-let sampleEquation = "\\frac{\\pi}{2} = \\int_{-1}^{1} \\sqrt{1-x^2}\\ dx";
 let hasShownBefore = false;
 
 $(document).ready(function () {
@@ -33,6 +32,11 @@ $(document).ready(function () {
     $("#result").slideUp(hasShownBefore ? 330 : 0, afterSlideUp);
   }
 
+  function render() {
+    $("#preview").html("$$" + $("#latexInputTextArea").val() + "$$");
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+  }
+
   $("#convertButton").click(function () {
     if (!$("#latexInputTextArea").val()) {
       show(
@@ -48,7 +52,7 @@ $(document).ready(function () {
     });
 
     $("#convertButton").prop("disabled", true);
-    $("#exampleButton").prop("disabled", true);
+    $("#renderButton").prop("disabled", true);
     $("#convertButton").prop("value", "Converting...");
     $.ajax({
       url: "/convert",
@@ -60,22 +64,26 @@ $(document).ready(function () {
       },
       success: function (data) {
         $("#convertButton").prop("disabled", false);
-        $("#exampleButton").prop("disabled", false);
+        $("#renderButton").prop("disabled", false);
         $("#convertButton").prop("value", "Convert");
         show(data);
       },
       error: function () {
         $("#convertButton").prop("disabled", false);
-        $("#exampleButton").prop("disabled", false);
+        $("#renderButton").prop("disabled", false);
         $("#convertButton").prop("value", "Convert");
         alert("Error communicating with server");
       },
     });
   });
 
-  // Show and convert a sample equation
-  $("#exampleButton").click(function () {
-    $("#latexInputTextArea").val(sampleEquation);
-    $("#convertButton").click();
+  $("#renderButton").click(function () {
+    render();
   });
+
+  $("#latexInputTextArea").on("keyup", function () {
+    if ($("#renderCheckbox").is(":checked")) render();
+  });
+
+  render();
 });

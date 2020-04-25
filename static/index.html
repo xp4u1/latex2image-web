@@ -20,6 +20,22 @@
     />
     <link rel="stylesheet" href="custom.css" />
     <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+    ></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        showProcessingMessages: false,
+        messageStyle: "none",
+        tex2jax: {
+          inlineMath: [["$", "$"]],
+          displayMath: [["$$", "$$"]],
+          processEnvironments: false,
+        },
+        "HTML-CSS": { imageFont: null },
+      });
+    </script>
+    <script
       src="https://code.jquery.com/jquery-3.3.1.min.js"
       integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
       crossorigin="anonymous"
@@ -35,13 +51,15 @@
         multiple image formats, and saved for use in other documents.
       </p>
       <p>
-        The full
-        <a href="https://github.com/joeraut/latex2image-web"
-          >source code is available on GitHub</a
-        >. Behind the scenes, a Node.js app starts an isolated Docker container
-        with a LaTeX installation for each request, compiling the generated .tex
-        file and converting it to an SVG vector image. If required, the SVG file
-        is then converted to a raster image format.
+        Equations are very time consuming to enter in word. the math mode of
+        LaTeX is the master in this, but unfortunately Word does not support
+        LaTeX very much. in newer versions, but also only under windows, you can
+        switch to the LaTeX input mode. nevertheless you can only use a fraction
+        of the commands provided by LaTeX. therefore i programmed/improved this
+        converter, so that you only need to drag the image of the formula into
+        the word document. The complete
+        <a href="https://github.com/xp4u1/LaTeX2image-web">source code</a> is
+        available on GitHub.
       </p>
       <br />
     </header>
@@ -60,8 +78,8 @@
             <div class="form-group col-sm-6">
               <label for="outputFormatSelect">Image format</label>
               <select class="form-control" id="outputFormatSelect">
-                <option>PNG</option>
-                <option selected>SVG</option>
+                <option selected>PNG</option>
+                <option>SVG</option>
                 <option>JPG</option>
               </select>
             </div>
@@ -81,6 +99,20 @@
               </select>
             </div>
           </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="renderCheckbox"
+            />
+            <label class="form-check-label" for="renderCheckbox"
+              >Render as typed</label
+            >
+          </div>
+
+          <br />
+          <br />
+
           <input
             type="submit"
             class="btn btn-primary"
@@ -91,9 +123,17 @@
           <input
             type="submit"
             class="btn btn-info"
-            id="exampleButton"
-            value="Show Example"
+            id="renderButton"
+            value="Render"
           />
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="container">
+      <div class="card">
+        <div class="card-body">
+          <p id="preview">Preview</p>
         </div>
       </div>
     </div>
@@ -109,6 +149,7 @@
             role="button"
             id="downloadButton"
             target="_blank"
+            download
             >Save Image</a
           >
         </div>
@@ -121,10 +162,10 @@
       <footer>
         <p>
           Copyright (c) 2020 Paul Hoerenz |
-          <a href="https://github.com/xp4u1/latex2image-web">source code</a>,
+          <a href="https://github.com/xp4u1/LaTeX2image-web">source code</a>,
           fork of
-          <a href="https://github.com/joeraut/latex2image-web"
-            >latex2image-web</a
+          <a href="https://github.com/joeraut/LaTeX2image-web"
+            >LaTeX2image-web</a
           >
         </p>
       </footer>
