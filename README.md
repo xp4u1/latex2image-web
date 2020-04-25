@@ -90,6 +90,7 @@ Commands used:
 ## Authors
 
 - Joseph Rautenbach - [joeraut](https://github.com/joeraut)
+- Paul Hoerenz - [xp4u1](https://github.com/xp4u1)
 
 ## Issues
 
